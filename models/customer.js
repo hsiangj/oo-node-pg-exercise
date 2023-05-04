@@ -15,6 +15,17 @@ class Customer {
     this.notes = notes;
   }
 
+  /** methods for getting/setting notes (keep as empty string, not NULL) */
+
+  set notes(val) {
+    this._notes = val || "";
+  }
+  
+  get notes() {
+    return this._notes;
+  }
+  
+
   /** find all customers. */
 
   static async all() {
@@ -105,8 +116,9 @@ class Customer {
     }
   }
 
-  fullName() {
-    return this.firstName + ' ' + this.lastName;
+  /** property to get full name. */
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`;
   }
 
 }
