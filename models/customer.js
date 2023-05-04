@@ -1,5 +1,6 @@
 /** Customer for Lunchly */
 
+const { Concat } = require("nunjucks/src/nodes");
 const db = require("../db");
 const Reservation = require("./reservation");
 
@@ -43,7 +44,7 @@ class Customer {
     );
 
     const customer = results.rows[0];
-
+      
     if (customer === undefined) {
       const err = new Error(`No such customer: ${id}`);
       err.status = 404;
@@ -78,6 +79,11 @@ class Customer {
       );
     }
   }
+
+  fullName() {
+    return this.firstName + ' ' + this.lastName;
+  }
+
 }
 
 module.exports = Customer;
