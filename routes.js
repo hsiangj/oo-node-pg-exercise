@@ -11,7 +11,13 @@ const router = new express.Router();
 
 router.get("/", async function(req, res, next) {
   try {
-    const customers = await Customer.all();
+    let customers;
+    if(req.query.search){
+      customers = await Customer.search(req.query.search);
+    }
+    
+    else {customers = await Customer.all()};
+    
     return res.render("customer_list.html", { customers });
   } catch (err) {
     return next(err);
@@ -36,7 +42,7 @@ router.post("/add/", async function(req, res, next) {
     const lastName = req.body.lastName;
     const phone = req.body.phone;
     const notes = req.body.notes;
-
+    
     const customer = new Customer({ firstName, lastName, phone, notes });
     await customer.save();
 

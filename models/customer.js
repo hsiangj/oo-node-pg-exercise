@@ -30,6 +30,31 @@ class Customer {
     return results.rows.map(c => new Customer(c));
   }
 
+  // search by customer name
+  static async search(name){
+    const results = await db.query(`
+      SELECT id, 
+         first_name AS "firstName",  
+         last_name AS "lastName", 
+         phone, 
+         notes
+       FROM customers
+       WHERE first_name LIKE $1
+       OR last_name ILIKE $1`,
+       [`%${name}%`]
+    );
+
+    const customers = results.rows;
+    
+    if (customers === undefined) {
+      const err = new Error(`No such customer with name: ${name}`);
+      err.status = 404;
+      throw err;
+    }
+
+    return results.rows.map(c => new Customer(c));
+  }
+
   /** get a customer by ID. */
 
   static async get(id) {
